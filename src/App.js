@@ -1,115 +1,51 @@
 import React, { Component } from 'react';
 import './App.css';
-
-import Person from './Person/Person'
-import Output from './Assignment-1/UserOutput/UserOutput'
-import Input from './Assignment-1/UserInput/UserInput'
+import Validation from './Validation/Validation'
+import Char from './Char/Char'
 
 class App extends Component {
-  stateNew = {
-    persons: [
-      { name: "Dafne", age: 31 },
-      { name: "Elfi", age: 59 },
-      { name: "Srini", age: 60 }
-    ],
-    otherState: 'Some other state'
+
+  state = { inputCount: 0 }
+
+  leftAlign = {
+    textAlign: 'left'
   }
 
-  switchNameHandler = (newName) => {
+  charStyle = {
+    display: 'inline-block',
+    padding: '16px',
+    textAlign: 'center',
+    margin: '16px',
+    border: '1px solid black'
+  }
+
+  inputChangedHandler = (event) => {
     this.setState({
-      persons: [
-        { name: newName, age: 31 },
-        { name: "Elfi", age: 59 },
-        { name: "Srini", age: 600 }
-      ]
+      inputCount: event.target.value.length
     })
   }
-
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: "Dafne", age: 31 },
-        { name: event.target.value, age: 59 },
-        { name: "Srini", age: 600 }
-      ]
-    })
-  }
-
-  // ASSIGNMENT 1
-  state = {
-    userNames: [
-      { name: "user1" },
-      { name: "user2" },
-      { name: "Ziggy Marley" }
-    ],
-    otherState: 'Some other state'
-  }
-
-  userChangedHandler = (event) => {
-    this.setState({
-      userNames: [
-        { name: event.target.value },
-        { name: "Ky-Mani Marley" },
-        { name: "Ziggy Marley" }
-      ],
-    })
-  }
-
-  // switchUserHandler = (newName) => {
-  //   this.setState({
-  //     persons: [
-  //       { name: newName },
-  //       { name: "Elfi" },
-  //       { name: "Srini" }
-  //     ]
-  //   })
-  // }
 
   render() {
-    const style = {
-      backgroundColor: 'white',
-      border: '1px solid blue',
-      font: 'inherit',
-      padding: '8px',
-      cursor: 'pointer'
-    }
-
-    const personContainer = {
-      display: 'flex'
-    }
-
     return (
       <div className="App" >
         <h1>Hi, I'm Dafne ;-)</h1>
-        <h3>is this really working?</h3>
+        <h3>Assignment 2</h3>
+        <ol style={this.leftAlign}>
+          <li>Create an input field (in App component) with a change listener which outputs the length of the entered text below it (e.g. in a paragraph).</li><br />
+          <li>Create a new component (=> ValidationComponent) which receives the text length as a prop</li><br />
+          <li>Inside the ValidationComponent, either output "Text too short" or "Text long enough" depending on the text length (e.g. take 5 as a minimum length)</li><br />
+          <li>Create another component (=> CharComponent) and style it as an inline box (=> display: inline-block, padding: 16px, text-align: center, margin: 16px, border: 1px solid black).</li><br />
+          <li>Render a list of CharComponents where each CharComponent receives a different letter of the entered text (in the initial input field) as a prop.</li>
+          <li>When you click a CharComponent, it should be removed from the entered text.</li>
+        </ol>
+        <p>Hint: Keep in mind that JavaScript strings are basically arrays!</p>
+        <input onChange={this.inputChangedHandler} />
+        <p>Input character count: {this.state.inputCount}</p>
 
-        {/* <button
-          style={style}
-          onClick={this.switchNameHandler.bind(this, 'Maximilian')}>Switch Name</button>
-
-        <div style={personContainer}>
-          <Person name={this.stateNew.persons[0].name} age={this.stateNew.persons[0].age} />
-
-          <Person name={this.stateNew.persons[1].name} age={this.stateNew.persons[1].age}
-            changed={this.nameChangedHandler}
-            click={this.switchNameHandler.bind(this, 'Max!!')}
-          >Special *CaSe*
-          </Person>
-
-          <Person name={this.stateNew.persons[2].name} age={this.stateNew.persons[2].age} />
-        </div> */}
-
-
-
-        {/* // ASSIGNMENT 1 */}
-        <Output userName="User name" user={this.state.userNames[0].name} />
-        <Input changed={this.userChangedHandler} user={this.state.userNames[0].name} />
-
-        <Output user={this.state.userNames[1].name} />
-        <Input />
-
-        <Output user={this.state.userNames[2].name} />
-        <Input />
+        <Validation length={this.state.inputCount} />
+        <div style={this.charStyle}>
+          <Char />
+        </div>
       </div >
     )
   }
