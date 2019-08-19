@@ -6,64 +6,31 @@ import Output from './Assignment-1/UserOutput/UserOutput'
 import Input from './Assignment-1/UserInput/UserInput'
 
 class App extends Component {
-  stateNew = {
-    persons: [
-      { name: "Dafne", age: 31 },
-      { name: "Elfi", age: 59 },
-      { name: "Srini", age: 60 }
-    ],
-    otherState: 'Some other state'
-  }
-
-  switchNameHandler = (newName) => {
-    this.setState({
-      persons: [
-        { name: newName, age: 31 },
-        { name: "Elfi", age: 59 },
-        { name: "Srini", age: 600 }
-      ]
-    })
-  }
-
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: "Dafne", age: 31 },
-        { name: event.target.value, age: 59 },
-        { name: "Srini", age: 600 }
-      ]
-    })
-  }
-
-  // ASSIGNMENT 1
   state = {
-    userNames: [
-      { name: "user1" },
-      { name: "user2" },
-      { name: "Ziggy Marley" }
+    persons: [
+      { key: "aasd3", name: "Dafne", age: 31 },
+      { key: "aasd30", name: "Elfi", age: 59 },
+      { key: "aasd03", name: "Srini", age: 60 }
     ],
-    otherState: 'Some other state'
+    otherState: 'Some other state',
+    showPersons: false
   }
 
-  userChangedHandler = (event) => {
+  togglePersonsHandler = () => {
+    console.log(this.state.showPersons);
+    let doesShow = this.state.showPersons;
+    this.setState({ showPersons: !doesShow })
+    console.log(this.state.showPersons);
+  }
+
+  deletePersonHandler = (personIndex) => {
+    // console.log("delete");
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
     this.setState({
-      userNames: [
-        { name: event.target.value },
-        { name: "Ky-Mani Marley" },
-        { name: "Ziggy Marley" }
-      ],
+      persons: persons
     })
   }
-
-  // switchUserHandler = (newName) => {
-  //   this.setState({
-  //     persons: [
-  //       { name: newName },
-  //       { name: "Elfi" },
-  //       { name: "Srini" }
-  //     ]
-  //   })
-  // }
 
   render() {
     const style = {
@@ -78,38 +45,30 @@ class App extends Component {
       display: 'flex'
     }
 
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div style={personContainer}>
+          {this.state.persons.map((person, index) => {
+            return <Person
+              click={() => this.deletePersonHandler(index)}
+              name={person.name}
+              age={person.age}
+              key={person.key} />
+          })}
+        </div>
+      )
+    }
+
     return (
       <div className="App" >
         <h1>Hi, I'm Dafne ;-)</h1>
         <h3>is this really working?</h3>
-
-        {/* <button
+        <button
           style={style}
-          onClick={this.switchNameHandler.bind(this, 'Maximilian')}>Switch Name</button>
-
-        <div style={personContainer}>
-          <Person name={this.stateNew.persons[0].name} age={this.stateNew.persons[0].age} />
-
-          <Person name={this.stateNew.persons[1].name} age={this.stateNew.persons[1].age}
-            changed={this.nameChangedHandler}
-            click={this.switchNameHandler.bind(this, 'Max!!')}
-          >Special *CaSe*
-          </Person>
-
-          <Person name={this.stateNew.persons[2].name} age={this.stateNew.persons[2].age} />
-        </div> */}
-
-
-
-        {/* // ASSIGNMENT 1 */}
-        <Output userName="User name" user={this.state.userNames[0].name} />
-        <Input changed={this.userChangedHandler} user={this.state.userNames[0].name} />
-
-        <Output user={this.state.userNames[1].name} />
-        <Input />
-
-        <Output user={this.state.userNames[2].name} />
-        <Input />
+          onClick={this.togglePersonsHandler}>Toggle Persons</button>
+        {persons}
       </div >
     )
   }
